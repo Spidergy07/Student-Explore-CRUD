@@ -1,0 +1,217 @@
+import React, { useState, useEffect } from 'react';
+import type { FormEvent } from 'react'; // Type-only import for FormEvent
+import { useAuth } from '../../contexts/AuthContext';
+import { WithContext as ReactTags } from 'react-tag-input'; // Using the actual import
+import type { Tag as ReactTagType } from 'react-tag-input'; // Aliasing to avoid confusion if any local Tag type existed
+
+interface PreferenceDataFromAPI {
+  favorite_subjects: string[];
+  dreams: string;
+  dream_job: string;
+  // Potentially other fields like created_at, updated_at if the API sends them
+}
+
+interface PreferenceFormData {
+  dreams: string;
+  dream_job: string;
+}
+
+interface PreferenceSubmissionData {
+    favoriteSubjects: string[]; // CamelCase as expected by backend controller
+    dreams: string;
+    dream_job: string;
+}
+
+const StudentPreferencesPage: React.FC = () => {
+  const { user } = useAuth();
+  const [formData, setFormData] = useState<PreferenceFormData>({ dreams: '', dream_job: '' });
+  const [tags, setTags] = useState<ReactTagType[]>([]); // Tag type is from react-tag-input
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPreferences = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch('/api/students/preferences', { credentials: 'include' });
+        if (!response.ok) {
+          throw new Error(`Failed to fetch preferences: ${response.statusText} (${response.status})`);
+        }
+        const apiResponse = await response.json();
+        if (apiResponse.status === 'success' && apiResponse.data) {
+          const prefs: PreferenceDataFromAPI = apiResponse.data;
+          setFormData({ dreams: prefs.dreams || '', dream_job: prefs.dream_job || '' });
+          setTags(prefs.favorite_subjects 
+            ? prefs.favorite_subjects.map((subject: string): ReactTagType => ({ 
+                id: subject, 
+                text: subject,
+                className: '' // Provide an empty string for className
+              })) 
+            : []);
+        } else {
+          // No preferences set yet, or unexpected data structure
+          setFormData({ dreams: '', dream_job: '' });
+          setTags([]);
+          if (apiResponse.status !== 'success') {
+            console.warn('API indicated not successful for fetching preferences:', apiResponse.message);
+          }
+        }
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'Could not load your preferences.';
+        setError(errorMessage);
+        console.error("Fetch preferences error:", err);
+      }
+      setIsLoading(false);
+    };
+
+    fetchPreferences();
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleDeleteTag = (i: number) => {
+    setTags(tags.filter((_tag, index) => index !== i));
+  };
+
+  const handleAddTag = (tag: ReactTagType) => { 
+    // When adding a new tag, ensure it also conforms to ReactTagType including className
+    const newTagWithName: ReactTagType = { ...tag, className: tag.className || '' };
+    if (!tags.find(t => t.text.toLowerCase() === newTagWithName.text.toLowerCase())) {
+        setTags([...tags, newTagWithName]); 
+    }
+  };
+
+  const handleDragTag = (tag: ReactTagType, currPos: number, newPos: number) => {
+    const newTags = tags.slice();
+    newTags.splice(currPos, 1);
+    newTags.splice(newPos, 0, tag);
+    setTags(newTags);
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    const submissionData: PreferenceSubmissionData = {
+      dreams: formData.dreams,
+      dream_job: formData.dream_job,
+      favoriteSubjects: tags.map(tag => tag.text),
+    };
+
+    try {
+      const response = await fetch('/api/students/preferences', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(submissionData),
+      });
+      const apiResponse = await response.json();
+      if (response.ok && apiResponse.status === 'success') {
+        setSuccess('บันทึกข้อมูลความชอบเรียบร้อยแล้ว!');
+        if (apiResponse.data) {
+          // Update state with the saved data (which includes parsed favorite_subjects)
+          const prefs: PreferenceDataFromAPI = apiResponse.data;
+          setFormData({ dreams: prefs.dreams || '', dream_job: prefs.dream_job || '' });
+          setTags(prefs.favorite_subjects 
+            ? prefs.favorite_subjects.map((subject: string): ReactTagType => ({ 
+                id: subject, 
+                text: subject,
+                className: '' // Provide an empty string for className
+              })) 
+            : []);
+        }
+      } else {
+        setError(apiResponse.message || 'ไม่สามารถบันทึกข้อมูลความชอบได้');
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'เกิดข้อผิดพลาดที่ไม่คาดคิด';
+      setError(errorMessage);
+      console.error("Submit preferences error:", err);
+    }
+    setIsLoading(false);
+  };
+
+  // Show full page loading only on initial data fetch attempt
+  if (isLoading && tags.length === 0 && !formData.dreams && !formData.dream_job) { 
+    return <div className="flex justify-center items-center min-h-screen">กำลังโหลดข้อมูลความชอบ...</div>;
+  }
+
+  return (
+    <div className="container mx-auto p-4 md:p-8 max-w-2xl">
+      <div className="card p-6 md:p-8 shadow-xl bg-white rounded-lg">
+        <h1 className="text-3xl font-semibold mb-2 text-center text-gray-800">ความชอบของฉัน</h1>
+        <p className="text-center text-gray-600 mb-8">
+          สวัสดี, <span className="font-bold text-indigo-600">{user?.username || 'นักเรียน'}</span>! บอกเราเกี่ยวกับสิ่งที่คุณสนใจและใฝ่ฝัน
+        </p>
+
+        {error && <div className="alert alert-error mb-4 p-4 bg-red-100 text-red-700 border border-red-300 rounded-md">{error}</div>}
+        {success && <div className="alert alert-success mb-4 p-4 bg-green-100 text-green-700 border border-green-300 rounded-md">{success}</div>}
+        
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="favorite_subjects" className="block text-sm font-medium text-gray-700 mb-1.5">วิชาที่ชอบ</label>
+            <ReactTags
+              tags={tags}
+              handleDelete={handleDeleteTag}
+              handleAddition={handleAddTag}
+              handleDrag={handleDragTag}
+              placeholder="พิมพ์ชื่อวิชาแล้วกด Enter"
+              inputFieldPosition="top"
+              allowDragDrop={true}
+              classNames={{
+                tags: 'react-tags__selected',
+                tagInput: 'react-tags__tag-input',
+                tagInputField: 'input-field text-sm react-tags__tag-input-field',
+                selected: 'react-tags__selected-tag-container',
+                tag: 'badge badge-primary gap-1 react-tags__selected-tag text-xs',
+                remove: 'react-tags__remove-button',
+              }}
+            />
+            <p className="text-xs text-gray-500 mt-1.5">คุณสามารถลากเพื่อจัดลำดับวิชาได้</p>
+          </div>
+
+          <div>
+            <label htmlFor="dreams" className="block text-sm font-medium text-gray-700 mb-1.5">ความฝันและแรงบันดาลใจ</label>
+            <textarea
+              id="dreams"
+              name="dreams"
+              className="input-field mt-1 h-32 resize-y"
+              value={formData.dreams}
+              onChange={handleInputChange}
+              placeholder="ความฝันของคุณในอนาคตคืออะไร? คุณหวังว่าจะประสบความสำเร็จในเรื่องใดบ้าง?"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="dream_job" className="block text-sm font-medium text-gray-700 mb-1.5">อาชีพในฝัน</label>
+            <input
+              type="text"
+              id="dream_job"
+              name="dream_job"
+              className="input-field mt-1"
+              value={formData.dream_job}
+              onChange={handleInputChange}
+              placeholder="อาชีพในอุดมคติของคุณคืออะไร?"
+            />
+          </div>
+
+          <button type="submit" className="btn btn-primary w-full py-2.5" disabled={isLoading && (tags.length > 0 || !!formData.dreams || !!formData.dream_job)}>
+            {isLoading && (tags.length > 0 || !!formData.dreams || !!formData.dream_job) ? (
+                <span className="loading loading-spinner loading-xs mr-2"></span> 
+            ) : null}
+            {isLoading && (tags.length > 0 || !!formData.dreams || !!formData.dream_job) ? 'กำลังบันทึก...' : 'บันทึกข้อมูลความชอบ'}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default StudentPreferencesPage; 

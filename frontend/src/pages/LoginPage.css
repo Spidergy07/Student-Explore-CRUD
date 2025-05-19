@@ -1,0 +1,122 @@
+.login-page {
+  display: flex;
+  flex-direction: column; /* Align footer properly */
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px; /* Add some padding for smaller screens */
+  box-sizing: border-box;
+}
+
+.login-container {
+  background-color: #ffffff;
+  padding: 2.5rem 3.5rem; /* Increased padding */
+  border-radius: 12px; /* Softer corners */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); /* More pronounced shadow */
+  text-align: center;
+  width: 100%;
+  max-width: 420px; /* Slightly wider */
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-container h2 {
+  margin-bottom: 2rem; /* More space below title */
+  color: #343a40; /* Darker, more modern text color */
+  font-size: 2.25rem; /* Larger title */
+  font-weight: 600; /* Bolder title */
+}
+
+.form-group {
+  margin-bottom: 1.25rem; /* Adjusted spacing */
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.6rem; /* Space between label and input */
+  color: #495057; /* Softer label color */
+  font-weight: 500; /* Medium weight */
+  font-size: 0.95rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.85rem 1rem; /* Comfortable padding */
+  border: 1px solid #ced4da; /* Standard border color */
+  border-radius: 8px; /* Rounded inputs */
+  box-sizing: border-box;
+  font-size: 1rem;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.form-group input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.login-button {
+  width: 100%;
+  padding: 0.9rem 1rem; /* More padding */
+  background-color: #007bff; /* Primary blue */
+  color: white;
+  border: none;
+  border-radius: 8px; /* Rounded button */
+  font-size: 1.05rem; /* Slightly larger text */
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+}
+
+.login-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.login-button:active {
+  transform: scale(0.98);
+}
+
+.error-message {
+  color: #721c24; /* Darker red for text */
+  background-color: #f8d7da; /* Light red background */
+  border: 1px solid #f5c6cb; /* Red border */
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.register-link {
+  margin-top: 2rem; /* More space above */
+  font-size: 0.95rem;
+  color: #6c757d; /* Neutral color */
+}
+
+.register-link a {
+  color: #007bff; /* Primary blue for link */
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+/* Example: If you need a very specific style for the error message that overrides Tailwind */
+/* .error-message-custom {
+  color: darkred;
+  font-weight: bold;
+} */ 

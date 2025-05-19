@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" aria-hidden="true" role="img">
+  <defs>
+    <linearGradient id="bookGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A8E063"/>
+      <stop offset="100%" stop-color="#56AB2F"/>
+    </linearGradient>
+    <linearGradient id="compassGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#D4AF37"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Book -->
+  <g transform="translate(100, 110)">
+    <!-- Book cover -->
+    <path d="M-40,-50 L40,-50 L40,50 L-40,50 Z" fill="url(#bookGradient)" stroke="#3A7D1A" stroke-width="2"/>
+    
+    <!-- Book spine -->
+    <path d="M-40,-50 L-50,-45 L-50,55 L-40,50 Z" fill="#3A7D1A" stroke="#2D5F15" stroke-width="1"/>
+    
+    <!-- Book top edge -->
+    <path d="M-40,-50 L-50,-45 L30,-45 L40,-50 Z" fill="#56AB2F" stroke="#3A7D1A" stroke-width="1"/>
+    
+    <!-- Pages (white lines) -->
+    <path d="M-30,-40 L30,-40" stroke="white" stroke-width="1"/>
+    <path d="M-30,-30 L30,-30" stroke="white" stroke-width="1"/>
+    <path d="M-30,-20 L30,-20" stroke="white" stroke-width="1"/>
+    <path d="M-30,-10 L30,-10" stroke="white" stroke-width="1"/>
+    <path d="M-30,0 L30,0" stroke="white" stroke-width="1"/>
+    <path d="M-30,10 L30,10" stroke="white" stroke-width="1"/>
+    <path d="M-30,20 L30,20" stroke="white" stroke-width="1"/>
+    <path d="M-30,30 L30,30" stroke="white" stroke-width="1"/>
+    <path d="M-30,40 L30,40" stroke="white" stroke-width="1"/>
+  </g>
+  
+  <!-- Compass -->
+  <g transform="translate(100, 60)">
+    <!-- Compass outer ring -->
+    <circle cx="0" cy="0" r="40" fill="url(#compassGold)" stroke="#996515" stroke-width="2"/>
+    
+    <!-- Compass inner circle -->
+    <circle cx="0" cy="0" r="35" fill="white" stroke="#996515" stroke-width="1"/>
+    
+    <!-- Compass directions -->
+    <text x="0" y="-25" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="10">N</text>
+    <text x="25" y="0" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="10">E</text>
+    <text x="0" y="25" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="10">S</text>
+    <text x="-25" y="0" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="10">W</text>
+    
+    <!-- Compass needle -->
+    <path d="M0,-30 L5,-5 L0,30 L-5,-5 Z" fill="#D4AF37" stroke="#996515" stroke-width="1"/>
+    <path d="M0,30 L5,-5 L0,-30 L-5,-5 Z" fill="#996515" stroke="#996515" stroke-width="1"/>
+    
+    <!-- Compass center -->
+    <circle cx="0" cy="0" r="5" fill="#D4AF37" stroke="#996515" stroke-width="1"/>
+  </g>
+</svg>

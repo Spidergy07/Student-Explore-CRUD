@@ -1,0 +1,140 @@
+.register-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  /* background-color and font-family will be inherited from index.css body style */
+}
+
+.register-container {
+  background-color: #ffffff;
+  padding: 2.5rem 3.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+  max-width: 420px;
+  animation: fadeIn 0.5s ease-out; /* Using the same animation */
+}
+
+/* Keyframes for fadeIn (can be defined once in a global CSS if preferred) */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.register-container h2 {
+  margin-bottom: 2rem;
+  color: #343a40;
+  font-size: 2.25rem;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.6rem;
+  color: #495057;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.form-group input:focus {
+  border-color: #28a745; /* Green for register focus */
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+  outline: none;
+}
+
+.register-button {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  background-color: #28a745; /* Green for register */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+}
+
+.register-button:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+.register-button:active {
+  transform: scale(0.98);
+}
+
+.error-message {
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.success-message {
+  color: #155724; /* Dark green for success text */
+  background-color: #d4edda; /* Light green background */
+  border: 1px solid #c3e6cb; /* Green border */
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.login-link {
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  color: #6c757d;
+}
+
+.login-link a {
+  color: #007bff; /* Blue for login link consistency */
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+/* 
+  Styles for .register-container, h2, .form-group, .form-group label, 
+  .form-group input, .register-button, .success-message, and .login-link 
+  are now largely handled by Tailwind utility classes and global classes 
+  (.card, .input-field, .btn, .btn-primary) applied directly in RegisterPage.tsx 
+  or defined in index.css.
+
+  Keep this file for any highly specific overrides or styles 
+  that cannot be achieved with Tailwind/global classes for RegisterPage.
+*/ 

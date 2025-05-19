@@ -1,0 +1,397 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: var(--color-accent-primary);
+  --color-brand-primary-dark: var(--color-accent-primary-dark);
+  --color-brand-primary-light: var(--color-accent-primary-light);
+  --color-brand-accent: var(--color-accent-secondary);
+  --color-brand-accent-dark: var(--color-accent-secondary-dark);
+  --color-brand-accent-light: var(--color-accent-secondary-light);
+  
+  --color-brand-neutral: #6b7280; /* Medium Gray for text */
+  --color-brand-neutral-dark: #374151; /* Darker Gray for primary text */
+  --color-brand-neutral-medium: #9ca3af; /* Lighter than neutral, for borders or placeholders */
+  --color-brand-neutral-light: #f3f4f6; /* Light Gray for borders/bg */
+  --color-brand-background: var(--color-background);
+  
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --shadow-glow: 0 0 15px rgba(88, 204, 2, 0.4); /* Adjusted glow to green */
+  --shadow-accent-glow: 0 0 15px var(--color-accent-secondary-light); /* Will be light green */
+  
+  --font-family-sans: 'Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif';
+}
+
+:root {
+  /* Main background */
+  --color-background: #f9fafb; /* Very light gray, almost white */
+
+  /* Primary Accent (Duolingo Green) */
+  --color-accent-primary: #58cc02;
+  --color-accent-primary-dark: #4aa002;
+  --color-accent-primary-light: #7ae54c;
+  
+  /* Secondary Accent (Lighter Green for subtle gradients or secondary elements) */
+  --color-accent-secondary: #82d94f; 
+  --color-accent-secondary-dark: #72c045;
+  --color-accent-secondary-light: #a0e57f;
+
+  /* Text & Neutral Colors (referenced in @theme) - these are effectively overridden by @theme values if same name */
+  --color-text-dark: #374151; 
+  --color-text-medium: #6b7280;
+  --color-text-light: #9ca3af;
+}
+
+@layer base {
+  @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0px); } }
+  @keyframes fadeInDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes spin-slow { to { transform: rotate(360deg); } }
+  @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
+  @keyframes pulse-soft { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
+
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-accent-primary-dark) var(--color-brand-neutral-light);
+  }
+  html::-webkit-scrollbar { width: 8px; }
+  html::-webkit-scrollbar-track { background: var(--color-brand-neutral-light); }
+  html::-webkit-scrollbar-thumb { background: var(--color-accent-primary-dark); border-radius: 8px; }
+  html::-webkit-scrollbar-thumb:hover { background: var(--color-accent-primary); }
+
+  body {
+    background-color: var(--color-brand-background);
+    color: var(--color-brand-neutral-dark);
+    font-family: var(--font-family-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-brand-neutral-dark);
+    font-weight: 700; /* Bolder for Duolingo feel */
+  }
+  h1 { font-size: 1.875rem; line-height: 2.25rem; margin-bottom: 1rem;}
+  h2 { font-size: 1.5rem; line-height: 2rem; margin-bottom: 0.75rem;}
+
+  a {
+    color: var(--color-brand-primary);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+  }
+  a:hover {
+    color: var(--color-brand-primary-dark);
+    text-decoration: underline;
+  }
+}
+
+@layer components {
+  .btn {
+    padding: 0.625rem 1.25rem; /* Slightly larger padding like Duolingo */
+    border-radius: 0.75rem; /* More rounded like Duolingo */
+    font-weight: 700; /* Bold text */
+    transition: all 0.2s ease-in-out;
+    border: 2px solid transparent; /* For outline consistency */
+    text-transform: uppercase; /* Duolingo buttons are often uppercase */
+    letter-spacing: 0.05em;
+  }
+
+  .btn-sm {
+    padding: 0.375rem 0.75rem; /* ลดขนาด padding เพื่อให้ปุ่มเล็กลง */
+    font-size: 0.875rem; /* ขนาดตัวอักษรเล็กลง */
+    line-height: 1.25rem;
+  }
+  
+  .btn-primary {
+    background-color: var(--color-brand-primary);
+    color: white;
+    box-shadow: 0 4px 0 var(--color-brand-primary-dark); /* Duolingo button shadow */
+  }
+  .btn-primary:hover {
+    background-color: var(--color-brand-primary-light);
+    box-shadow: 0 2px 0 var(--color-brand-primary-dark);
+    transform: translateY(1px);
+  }
+  .btn-primary:active {
+    box-shadow: none;
+    transform: translateY(2px);
+  }
+  
+  .btn-secondary {
+    background-color: var(--color-brand-accent);
+    color: white;
+    box-shadow: 0 4px 0 var(--color-brand-accent-dark);
+  }
+   .btn-secondary:hover {
+    background-color: var(--color-brand-accent-light);
+    box-shadow: 0 2px 0 var(--color-brand-accent-dark);
+    transform: translateY(1px);
+  }
+  .btn-secondary:active {
+    box-shadow: none;
+    transform: translateY(2px);
+  }
+  
+  .btn-outline {
+    background-color: transparent;
+    border-color: var(--color-brand-neutral-medium); 
+    color: var(--color-brand-primary);
+    box-shadow: 0 4px 0 var(--color-brand-neutral-light); 
+  }
+  .btn-outline:hover {
+    border-color: var(--color-brand-primary);
+    background-color: rgba(88, 204, 2, 0.05);
+    box-shadow: 0 2px 0 var(--color-brand-neutral-light);
+     transform: translateY(1px);
+  }
+   .btn-outline:active {
+    box-shadow: none;
+    transform: translateY(2px);
+  }
+  
+  .input-field {
+    display: block;
+    width: 100%;
+    border-radius: 0.75rem; /* More rounded */
+    border: 2px solid var(--color-brand-neutral-light);
+    padding: 0.75rem 1rem;
+    color: var(--color-brand-neutral-dark);
+    background-color: #ffffff; /* Explicit white background */
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .input-field:focus {
+    outline: none;
+    border-color: var(--color-brand-primary);
+    box-shadow: 0 0 0 3px rgba(88, 204, 2, 0.2);
+  }
+  
+  .card {
+    background-color: white;
+    border-radius: 1rem; /* More rounded */
+    box-shadow: var(--shadow-soft);
+    padding: 2rem; /* Generous padding */
+    border: 1px solid var(--color-brand-neutral-light);
+  }
+  
+  .navbar-link { /* Assuming you might add a navbar later */
+    color: var(--color-brand-neutral);
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: color 0.2s, background-color 0.2s;
+  }
+  .navbar-link:hover {
+    color: var(--color-brand-primary);
+    background-color: rgba(88, 204, 2, 0.05);
+  }
+  .navbar-link-active {
+    color: var(--color-brand-primary);
+    font-weight: 700;
+  }
+
+  .custom-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+  }
+
+  /* === Tag Styling with Duolingo-inspired Design === */
+  .custom-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-color: var(--color-brand-primary-light, #7ae54c);
+    color: var(--color-brand-neutral-dark, #374151);
+    font-weight: 800;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0.75rem 3rem 0.75rem 1.5rem;
+    margin: 0.125rem;
+    margin-top: 0.25rem;
+    border-radius: 999px;
+    box-shadow: 0 6px 0 var(--color-brand-primary-dark, #4aa002);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease-in-out;
+    cursor: grab;
+    min-height: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    animation: bounceIn 0.5s ease-out;
+  }
+
+  /* Hover effect */
+  .custom-tag:hover {
+    background-color: var(--color-brand-primary, #58cc02);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 0 var(--color-brand-primary-dark, #4aa002);
+  }
+
+  /* Active/being dragged state */
+  .custom-tag:active {
+    cursor: grabbing;
+    transform: translateY(2px);
+    box-shadow: 0 4px 0 var(--color-brand-primary-dark, #4aa002);
+  }
+
+  /* === Remove Button Styling === */
+  .custom-remove-btn {
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    background-color: #ff5852;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-50%);
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 3px 0 rgba(220, 38, 38, 0.5);
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    padding: 0;
+  }
+
+  .custom-remove-btn::before {
+    content: "×";
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    display: block;
+    margin-top: -2px; /* Fine-tune the cross position */
+  }
+
+  /* Hide any other child elements */
+  .custom-remove-btn > * {
+    display: none !important;
+  }
+
+  /* Hover state for remove button when hovering over tag */
+  .custom-tag:hover .custom-remove-btn {
+    background-color: #ff4136;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 0 rgba(220, 38, 38, 0.6);
+  }
+
+  /* Direct hover on the remove button */
+  .custom-remove-btn:hover,
+  .custom-remove-btn:focus-visible {
+    background-color: #dc2626;
+    transform: translateY(-50%) scale(1.15);
+    box-shadow: 0 3px 0 rgba(220, 38, 38, 0.6);
+  }
+
+  /* Active state for remove button */
+  .custom-remove-btn:active {
+    background-color: #b91c1c;
+    transform: translateY(-50%) scale(0.95);
+    box-shadow: 0 1px 0 rgba(220, 38, 38, 0.7);
+  }
+
+  /* Bounce animation for new tags */
+  @keyframes bounceIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+  }
+
+  /* Input field styling */
+  .tag-input {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .tag-input input {
+    flex-grow: 1;
+    border-radius: 0.75rem;
+    border: 2px solid var(--color-brand-neutral-light);
+    padding: 0.75rem 1rem;
+    font-weight: 500;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .tag-input input:focus {
+    outline: none;
+    border-color: var(--color-brand-primary);
+    box-shadow: 0 0 0 3px rgba(88, 204, 2, 0.2);
+  }
+
+  .tag-input button {
+    background-color: var(--color-brand-primary);
+    color: white;
+    font-weight: 700;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 0 var(--color-brand-primary-dark);
+    transition: all 0.2s ease-in-out;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tag-input button:hover {
+    background-color: var(--color-brand-primary-light);
+    transform: translateY(-2px);
+  }
+
+  .tag-input button:active {
+    box-shadow: 0 2px 0 var(--color-brand-primary-dark);
+    transform: translateY(0);
+  }
+
+  .tag-input button:disabled {
+    background-color: var(--color-brand-neutral-medium);
+    box-shadow: 0 2px 0 var(--color-brand-neutral);
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
+
+@layer utilities {
+  .animate-float { animation: float 3s ease-in-out infinite; }
+  .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+  .animate-fade-in-down { animation: fadeInDown 0.5s ease-out forwards; }
+  .animate-fade-in-up { animation: fadeInUp 0.5s ease-out forwards; }
+  .animate-spin-slow { animation: spin-slow 3s linear infinite; }
+  .animate-shimmer { animation: shimmer 2s infinite linear; background: linear-gradient(to right, #f0f0f0 0%, #e0e0e0 20%, #f0f0f0 40%, #f0f0f0 100%); background-size: 1000px 100%; }
+  .animate-pulse-soft { animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+  .glass-effect { /* Might not fit Duolingo, but keeping from your example */
+    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .text-gradient-green {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right, var(--color-accent-primary), var(--color-accent-secondary-light));
+  }
+  
+  .bg-gradient-green {
+    background-image: linear-gradient(to right, var(--color-accent-primary), var(--color-accent-secondary-light));
+  }
+  
+  .bg-grid-pattern { /* Might not fit Duolingo, but keeping from your example */
+    background-image: 
+      linear-gradient(rgba(200, 200, 200, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200, 200, 200, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+}

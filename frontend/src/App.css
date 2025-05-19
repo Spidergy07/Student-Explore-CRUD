@@ -1,0 +1,52 @@
+/* Styles in this file are no longer needed as we are primarily using Tailwind CSS */
+/* You can add custom non-Tailwind CSS for App.tsx here if necessary */
+
+/*
+  IMPORTANT: The primary Tailwind CSS setup (import, theme, layers) 
+  should ideally be in a single global CSS file like index.css to avoid redundancy and potential conflicts.
+
+  This App.css file is structured as requested, but consider if these declarations
+  are needed here or if they should be solely managed by index.css.
+
+  If App.css is used, it should typically be for component-specific styles for App.tsx
+  that cannot be achieved with Tailwind utility classes or are too complex for inline application.
+*/
+
+/* @import "tailwindcss"; /* This might be redundant if already in index.css */
+
+@theme {
+  /* App-specific theme extensions or overrides, if necessary. */
+  /* extend: {
+    colors: {
+      appSpecificColor: '#ff00ff',
+    },
+  } */
+}
+
+:root {
+  /* App-specific global CSS variables, if necessary. */
+  /* --app-header-height: 60px; */
+}
+
+@layer base {
+  /* App-specific base style overrides or additions. */
+  /* For example:
+  #root {
+    @apply flex flex-col min-h-screen;
+  }
+  */
+}
+
+@layer components {
+  /* Custom component classes specific to App.tsx. */
+  /* .app-header {
+    @apply bg-white shadow-md;
+  } */
+}
+
+@layer utilities {
+  /* Custom utility classes specific to App.tsx. */
+  /* .custom-utility {
+    @apply p-4;
+  } */
+}
